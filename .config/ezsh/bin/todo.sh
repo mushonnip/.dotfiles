@@ -1,0 +1,1 @@
+/home/me/.config/ezsh/todo/todo.sh
