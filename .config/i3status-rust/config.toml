@@ -1,0 +1,73 @@
+icons_format = "{icon}"
+
+[theme]
+theme = "solarized-dark"
+[theme.overrides]
+idle_bg = "#123456"
+idle_fg = "#abcdef"
+
+[icons]
+icons = "awesome6"
+
+[[block]]
+block = "toggle"
+format = " $icon a2c "
+command_state = "systemctl --user is-active --quiet aria2.service && echo 1"
+command_on = "systemctl --user start aria2.service"
+command_off = "systemctl --user stop aria2.service"
+
+[[block]]
+block = "toggle"
+format = " $icon warp "
+command_state = "warp-cli status | grep -q 'Connected' && echo 'true'"
+command_on = "warp-cli connect"
+command_off = "warp-cli disconnect"
+
+[[block]]
+block = "cpu"
+interval = 1
+format = " $icon $utilization "
+format_alt = " $icon $frequency{ $boost|} "
+
+[[block]]
+block = "memory"
+format = " $icon $mem_total_used_percents.eng(w:2) "
+format_alt = " $icon_swap $swap_used_percents.eng(w:2) "
+
+[[block]]
+block = "sound"
+max_vol = 100
+driver = "auto"
+format = " $icon {$volume |}"
+[block.icons_overrides]
+volume_muted = " 婢"
+volume = "奔"
+
+[[block]]
+block = "battery"
+format = " $icon $percentage"
+full_format = " $icon $percentage "
+device = "DisplayDevice"
+driver = "upower"
+missing_format = ""
+empty_format = "test"
+interval = 30
+
+[[block]]
+block = "net"
+format = " $icon {$signal_strength $ssid $frequency|Wired connection} "
+
+[[block]]
+block = "bluetooth"
+mac = "08:C8:C2:72:09:7A"
+disconnected_format = ""
+# format = " $icon $name "
+[block.battery_state]
+"0..20" = "critical"
+"21..70" = "warning"
+"71..100" = "good"
+
+[[block]]
+block = "time"
+interval = 5
+format = " $timestamp.datetime(f:'%a %d/%m %R') "

@@ -55,7 +55,8 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec "rofi -modi drun,run -show drun"
+# bindsym $mod+d exec "rofi -modi drun,run -show drun"
+bindsym $mod+d exec --no-startup-id ~/.config/rofi/launchers/type-2/launcher.sh
 # A more modern dmenu replacement is rofi:
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
@@ -114,9 +115,9 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1:www"
-set $ws2 "2:code"
-set $ws3 "3:devtool"
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
 set $ws4 "4"
 set $ws5 "5"
 set $ws6 "6"
@@ -186,41 +187,39 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 # default bar
-bar {
-    position top
-    status_command i3status
-    tray_output primary
-    strip_workspace_name yes
-    strip_workspace_numbers yes
-}
+# bar {
+#     position top
+#     status_command i3status
+#     tray_output primary
+#     strip_workspace_name yes
+#     strip_workspace_numbers yes
+# }
 
 # i3status-rust bar
-#bar {
-#    font pango:DejaVu Sans Mono, FontAwesome 12
-#    position top
-#    status_command /usr/bin/i3status-rs /home/me/.config/i3status-rust/config.toml
-#    colors {
-#        separator #666666
-#        background #222222
-#        statusline #dddddd
-#        focused_workspace #0088CC #0088CC #ffffff
-#        active_workspace #333333 #333333 #ffffff
-#        inactive_workspace #333333 #333333 #888888
-#        urgent_workspace #2f343a #900000 #ffffff
-#    }
-#}
+bar {
+   font pango:DejaVu Sans Mono, FontAwesome 8
+   position bottom
+   status_command /usr/bin/i3status-rs /home/me/.config/i3status-rust/config.toml
+   colors {
+       separator #666666
+    #    background #222222
+       background #000000
+       statusline #dddddd
+       focused_workspace #0088CC #0088CC #ffffff
+       active_workspace #333333 #333333 #ffffff
+       inactive_workspace #333333 #333333 #888888
+       urgent_workspace #2f343a #900000 #ffffff
+   }
+}
 
 exec --no-startup-id /usr/share/libpam-kwallet-common/pam_kwallet_init
-
-#bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
-#bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
-#bindsym XF86AudioMute exec amixer -q set Master toggle
 
 bindsym XF86MonBrightnessUp exec brightnessctl set +5%
 bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
 
-exec --no-startup-id picom
+exec --no-startup-id picom  -b --config ~/.config/i3/picom.conf
 exec --no-startup-id feh --bg-fill -z ~/Pictures/wallpapers
+#exec --no-startup-id wallset -V ~/Videos/kafka.mp4
 
 default_border pixel 1
 default_floating_border pixel 1
@@ -232,3 +231,21 @@ exec_always --no-startup-id dunst
 
 #auto connect bluetooth audio
 exec_always --no-startup-id pactl load-module module-switch-on-connect
+
+#auth polkit
+exec --no-startup-id /usr/lib/polkit-kde-authentication-agent-1
+
+
+exec xinput set-prop "MSFT0001:00 06CB:CD98 Touchpad" "libinput Tapping Enabled" 1
+
+for_window [class="mpv"] floating enable
+for_window [class="mpv"] resize set 1280px 720px
+#for_window [class="mpv"] move position center
+for_window [class="mpv"] move absolute position 2024 205
+
+for_window [class="spectacle"] floating enable
+
+
+#custom shortcut
+bindsym Print exec spectacle -r
+bindsym --release Shift+Print exec spectacle
